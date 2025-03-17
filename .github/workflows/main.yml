@@ -301,13 +301,14 @@ jobs:
             fi
           done
 
-          cyan -i youtube.ipa -o YouTubePlus_${{ inputs.tweak_version }}.ipa -uwef $tweaks -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }}
+          cyan -i youtube.ipa -o YTLite_v${{ env.URL_YT }}_${{ inputs.tweak_version }}.ipa -uwef $tweaks -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }}
 
       - name: Upload to GitHub Releases
         uses: softprops/action-gh-release@v2.0.1
         with:
+          tag_name: v${{ env.YT_VERSION }}-${{ inputs.tweak_version }
           name: YouTubePlus v${{ inputs.tweak_version }} (${{ github.run_number }})
-          files: YTLite.v${{ env.URL_YT }}-${{ inputs.tweak_version }}.ipa
+          files: YTLite_v${{ env.URL_YT }}_${{ inputs.tweak_version }}.ipa
           draft: true
 
       - name: Output Release URL
