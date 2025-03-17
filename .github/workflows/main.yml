@@ -144,12 +144,10 @@ jobs:
         id: download_youtube
         run: |
          wget "${{ inputs.ipa_url }}" --no-verbose -O ${{ github.workspace }}/youtube.ipa
-         unzip -q ${{ github.workspace }}/youtube.ipa -d ${{ github.workspace }}/tmp
-         # Get the version number of the YouTube app and store it
-         echo "YT_VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' ${{ github.workspace }}/tmp/Payload/YouTube.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')" >> $GITHUB_ENV
+         wget "${{ inputs.ipa_url }}" --no-verbose -O main/YouTube.ipa
+         unzip -q main/YouTube.ipa -d main/tmp
+         echo "YT_VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' main/tmp/Payload/YouTube.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')" >> $GITHUB_ENV
          echo $YT_VERSION
-        env:
-          YOUTUBE_URL: ${{ env.URL_YT }}
 
       - name: Clone Open in YouTube (Safari extension)
         run: |
@@ -302,7 +300,7 @@ jobs:
             fi
           done
 
-          cyan -i youtube.ipa -o YTLite.v${{ env.URL_YT }}_${{ inputs.tweak_version }}.ipa -uwef $tweaks -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }}
+          cyan -i youtube.ipa -o YTLite.v${{ env.URL_YT }}-${{ inputs.tweak_version }}.ipa -uwef $tweaks -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }}
 
       - name: Upload to GitHub Releases
         uses: softprops/action-gh-release@v2.0.1
